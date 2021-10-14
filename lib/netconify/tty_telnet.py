@@ -77,7 +77,7 @@ class Telnet(Terminal):
         got = self._tn.expect(Terminal._RE_PAT, self.EXPECT_TIMEOUT)
         sre = got[1]
 
-        if 'in use' in got[2]:
+        if 'in use'.encode() in got[2]:
             raise RuntimeError("open_fail: port already in use")
 
         # (buffer, RE group)

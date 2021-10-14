@@ -63,11 +63,11 @@ class Telnet(Terminal):
 
     def write(self, content):
         """ write content + <ENTER> """
-        self._tn.write(content + '\n')
+        self._tn.write((content + '\n').encode())
 
     def rawwrite(self, content):
         """ write content as-is """
-        self._tn.write(content)
+        self._tn.write((content).encode())
 
     def read(self):
         """ read a single line """

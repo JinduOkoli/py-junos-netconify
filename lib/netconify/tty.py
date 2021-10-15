@@ -47,7 +47,8 @@ class Terminal(object):
         '(?P<passwd>assword:\s*$)',
         '(?P<badpasswd>ogin incorrect)',
         '(?P<shell>%|#\s*$)',
-        '(?P<cli>[^\\-"]>\s*$)'
+        '(?P<cli>[^\\-"]>\s*$)',
+        '(?P<Session>Session\s*)'
     ]
 
     # -----------------------------------------------------------------------

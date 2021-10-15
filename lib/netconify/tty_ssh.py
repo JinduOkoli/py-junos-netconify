@@ -96,7 +96,7 @@ class SecureShell(Terminal):
             rd, wr, err = select([self._chan], [], [], self.SELECT_WAIT)
             sleep(0.05)
             if rd:
-                data = self._chan.recv(self.RECVSZ)
+                data = (self._chan.recv(self.RECVSZ)).decode()
                 got.append(data)
                 found = _PROMPT.search(data)
                 if found is not None:

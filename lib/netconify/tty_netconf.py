@@ -75,7 +75,7 @@ class tty_netconf(object):
         cmd = E('load-configuration', dict(format='text', action=action),
                 E('configuration-text', content)
                 )
-        rsp = self.rpc(etree.tostring(cmd))
+        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
         return rsp if rsp.findtext('.//ok') is None else True
 
     def commit_check(self):
@@ -101,7 +101,7 @@ class tty_netconf(object):
     def rollback(self):
         """ rollback that recent changes """
         cmd = E('load-configuration', dict(compare='rollback', rollback="0"))
-        return self.rpc(etree.tostring(cmd))
+        return self.rpc(etree.tostring(cmd, encoding='unicode'))
 
     # -------------------------------------------------------------------------
     # MISC device commands
@@ -110,20 +110,20 @@ class tty_netconf(object):
     def reboot(self, in_min=0):
         """ issue a reboot to the device """
         cmd = E('request-reboot', E('in', str(in_min)))
-        rsp = self.rpc(etree.tostring(cmd))
+        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
         return True
 
     def poweroff(self, in_min=0):
         """ issue a reboot to the device """
         cmd = E('request-power-off', E('in', str(in_min)))
-        rsp = self.rpc(etree.tostring(cmd))
+        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
         return True
 
     def zeroize(self):
         """ issue a reboot to the device """
         cmd = E.command('request system zeroize')
         try:
-            rsp = self.rpc(etree.tostring(cmd))
+            rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
         except:
             pass
         return True
@@ -136,14 +136,14 @@ class tty_netconf(object):
                 E('node',
                   str(node)),
                 E('reboot'))
-        rsp = self.rpc(etree.tostring(cmd))
+        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
         # device will be set to new cluster ID:NODE value
         return True
 
     def disablecluster(self):
         """ issue set chassis cluster disable to the device nad reboot """
         cmd = E.command('set chassis cluster disable reboot')
-        rsp = self.rpc(etree.tostring(cmd))
+        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
         # No need to check error exception, device will be rebooted even if not
         # in cluster
         return True
@@ -156,7 +156,7 @@ class tty_netconf(object):
                 E('node',
                   str(node)),
                 E('reboot'))
-        rsp = self.rpc(etree.tostring(cmd))
+        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
         # device will be set to new cluster ID:NODE value
         return True
 

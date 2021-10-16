@@ -63,15 +63,15 @@ class Telnet(Terminal):
 
     def write(self, content):
         """ write content + <ENTER> """
-        self._tn.write((content + '\n').encode())
+        self._tn.write((content + '\n').encode('ascii'))
 
     def rawwrite(self, content):
         """ write content as-is """
-        self._tn.write((content).encode())
+        self._tn.write(content.encode('ascii'))
 
     def read(self):
         """ read a single line """
-        return self._tn.read_until('\n', self.EXPECT_TIMEOUT)
+        return self._tn.read_until('\n'.encode('ascii'), self.EXPECT_TIMEOUT)
 
     def read_prompt(self):
         got = self._tn.expect(Terminal._RE_PAT, self.EXPECT_TIMEOUT)

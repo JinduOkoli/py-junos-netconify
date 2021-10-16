@@ -9,7 +9,7 @@ import re
 import argparse
 import logging
 import traceback
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 from getpass import getpass
 from lxml import etree
 import traceback

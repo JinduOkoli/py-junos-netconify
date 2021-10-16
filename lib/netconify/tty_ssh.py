@@ -71,7 +71,7 @@ class SecureShell(Terminal):
         """
         gotr = []
         while True:
-            data = self._chan.recv(1)
+            data = (self._chan.recv(1)).decode()
             if data is None or len(data) <= 0:
                 raise ValueError('Unable to detect device prompt')
             elif '\n' in data:

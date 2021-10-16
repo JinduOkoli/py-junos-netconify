@@ -45,7 +45,11 @@ class tty_netconf(object):
         while True:
             time.sleep(0.1)
             line = self._tty.read()
-            if line.startswith("<!--"):
+            try:
+                line = line.decode()
+            except (UnicodeDecodeError, AttributeError):
+                pass
+            if line.startswith('<!--'):
                 break
 
         self.hello = self._receive()
@@ -101,7 +105,7 @@ class tty_netconf(object):
     def rollback(self):
         """ rollback that recent changes """
         cmd = E('load-configuration', dict(compare='rollback', rollback="0"))
-        return self.rpc(etree.tostring(cmd, encoding='unicode'))
+        return self.rpc(etree.tostring(cmd, encoding='ascii'))
 
     # -------------------------------------------------------------------------
     # MISC device commands
@@ -110,20 +114,20 @@ class tty_netconf(object):
     def reboot(self, in_min=0):
         """ issue a reboot to the device """
         cmd = E('request-reboot', E('in', str(in_min)))
-        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
+        rsp = self.rpc(etree.tostring(cmd, encoding='ascii'))
         return True
 
     def poweroff(self, in_min=0):
         """ issue a reboot to the device """
         cmd = E('request-power-off', E('in', str(in_min)))
-        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
+        rsp = self.rpc(etree.tostring(cmd, encoding='ascii'))
         return True
 
     def zeroize(self):
         """ issue a reboot to the device """
         cmd = E.command('request system zeroize')
         try:
-            rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
+            rsp = self.rpc(etree.tostring(cmd, encoding='ascii'))
         except:
             pass
         return True
@@ -136,7 +140,7 @@ class tty_netconf(object):
                 E('node',
                   str(node)),
                 E('reboot'))
-        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
+        rsp = self.rpc(etree.tostring(cmd, encoding='ascii'))
         # device will be set to new cluster ID:NODE value
         return True
 
@@ -156,7 +160,7 @@ class tty_netconf(object):
                 E('node',
                   str(node)),
                 E('reboot'))
-        rsp = self.rpc(etree.tostring(cmd, encoding='unicode'))
+        rsp = self.rpc(etree.tostring(cmd, encoding='ascii'))
         # device will be set to new cluster ID:NODE value
         return True
 
@@ -197,6 +201,10 @@ class tty_netconf(object):
         rxbuf = []
         while True:
             line = self._tty.read().strip()
+            try:
+                line = line.decode()
+            except (UnicodeDecodeError, AttributeError):
+                pass
             if cmdo.verbose == 2:
                 print(line)  # enable to see received xml messages
             if not line:

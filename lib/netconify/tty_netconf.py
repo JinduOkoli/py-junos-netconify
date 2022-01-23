@@ -182,6 +182,7 @@ class tty_netconf(object):
         if not cmd.startswith('<'):
             cmd = '<{0}/>'.format(cmd)
         self._tty.rawwrite('<rpc>{0}</rpc>'.format(cmd))
+        self._tty.write("\n") #@@@ hack to press enter
         rsp = self._receive()
         try:
             return rsp[0]  # return first child after the <rpc-reply>
